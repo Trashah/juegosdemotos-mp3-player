@@ -61,12 +61,12 @@ background1_img = pygame.image.load("images/background1.png").convert_alpha()
 background2_img = pygame.image.load("images/background2.png").convert_alpha()
 
 #create buttons
-stop_button = Button(304, 125, stop_img, 1)
+stop_button = Button(659, 462, stop_img, .15)
 play_button = Button(614, 278, play_img, 0.3)
 next_button = Button(336, 375, next_img, 1)
 back_button = Button(226, 75, back_img, 1)
-quit_button = Button(630, 500, quit_img, 1)
-pause_button = Button(500, 400, pause_img, 0.5)
+quit_button = Button(630, 500, quit_img, .7)
+pause_button = Button(658, 388, pause_img, 0.15)
 previous_button = Button(246, 325, previous_img, 1)
 settings_button = Button(332, 450, settings_img, 1)
 
@@ -78,6 +78,11 @@ class MusicPlayer:
     def __init__(self):
         self.music_file = False
         self.playing_state = False
+
+    def intro(self):
+        mixer.init()
+        mixer.music.load("audio files/intro en mp3.mp3")
+        mixer.music.play()
 
     def load(self):
             self.music_file = filedialog.askopenfilename()
@@ -101,11 +106,16 @@ class MusicPlayer:
         pass
 
     def stop(self):
+        mixer.music.stop()
+        self.music_file = None
+        self.playing_state = False
         pass
 
 mp3 = MusicPlayer()
+
 run = True
 
+#mp3.intro()
 while run:
     
     screen.fill((255, 255, 255))
@@ -117,6 +127,9 @@ while run:
 
     if pause_button.draw(screen):
         mp3.pause()
+
+    if stop_button.draw(screen):
+        mp3.stop()
 
     if quit_button.draw(screen):
         run = False
