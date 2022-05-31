@@ -82,6 +82,7 @@ class MusicPlayer:
         self.music_name = None
         self.playing_state = False
         self.background_state = True
+        self.paused = False
 
     def intro(self):
         mixer.init()
@@ -96,7 +97,11 @@ class MusicPlayer:
 
     def play(self):
         if self.music_file and not self.playing_state:
-            mixer.music.play()
+            if self.paused:
+                mixer.music.unpause()
+                self.paused = False
+            else:
+                mixer.music.play()
             self.playing_state = True
         pass
 
@@ -104,6 +109,7 @@ class MusicPlayer:
         if self.playing_state:
             mixer.music.pause()
             self.playing_state = False
+            self.paused = True
         pass
 
     def stop(self):
@@ -129,6 +135,7 @@ while run:
         background2.draw(screen)
 
     if open_button.draw(screen):
+        mp3.stop()
         mp3.load()
 
     if play_button.draw(screen):
