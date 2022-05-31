@@ -53,20 +53,22 @@ stop_img = pygame.image.load("images/stop.png").convert_alpha()
 play_img = pygame.image.load("images/play.png").convert_alpha()
 next_img = pygame.image.load("images/next.png").convert_alpha()
 back_img = pygame.image.load("images/back.png").convert_alpha()
-quit_img = pygame.image.load("images/quit.png").convert_alpha()
+exit_img = pygame.image.load("images/exit.png").convert_alpha()
 pause_img = pygame.image.load("images/pause.png").convert_alpha()
+open_img = pygame.image.load("images/open.png").convert_alpha()
 previous_img = pygame.image.load("images/previous.png").convert_alpha()
 settings_img = pygame.image.load("images/settings.png").convert_alpha()
 background1_img = pygame.image.load("images/background1.png").convert_alpha()
 background2_img = pygame.image.load("images/background2.png").convert_alpha()
 
 #create buttons
-stop_button = Button(659, 462, stop_img, .15)
-play_button = Button(614, 278, play_img, 0.3)
+stop_button = Button(611, 464, stop_img, 0.37)
+open_button = Button(618, 278, open_img, 0.4)
+play_button = Button(611, 389, play_img, 0.18)
 next_button = Button(336, 375, next_img, 1)
 back_button = Button(226, 75, back_img, 1)
-quit_button = Button(630, 500, quit_img, .7)
-pause_button = Button(658, 388, pause_img, 0.15)
+exit_button = Button(661, 464, exit_img, .19)
+pause_button = Button(661, 389, pause_img, 0.18)
 previous_button = Button(246, 325, previous_img, 1)
 settings_button = Button(332, 450, settings_img, 1)
 
@@ -77,21 +79,23 @@ background2 = Background(10, 50, background2_img, 0.23)
 class MusicPlayer:
     def __init__(self):
         self.music_file = False
+        self.music_name = None
         self.playing_state = False
+        self.background_state = True
 
     def intro(self):
         mixer.init()
-        mixer.music.load("audio files/intro en mp3.mp3")
+        mixer.music.load("audio files/en mp3 intro.mp3")
         mixer.music.play()
 
     def load(self):
             self.music_file = filedialog.askopenfilename()
+            mixer.init()
+            if self.music_file: mixer.music.load(self.music_file)
             pass
 
     def play(self):
-        if self.music_file:
-            mixer.init()
-            mixer.music.load(self.music_file)
+        if self.music_file and not self.playing_state:
             mixer.music.play()
             self.playing_state = True
         pass
@@ -100,9 +104,6 @@ class MusicPlayer:
         if self.playing_state:
             mixer.music.pause()
             self.playing_state = False
-        else:
-            mixer.music.unpause()
-            self.playing_state = True
         pass
 
     def stop(self):
@@ -111,18 +112,26 @@ class MusicPlayer:
         self.playing_state = False
         pass
 
+    def changeLayout(self):
+        pass
+
 mp3 = MusicPlayer()
 
 run = True
 
-#mp3.intro()
+mp3.intro()
 while run:
     
     screen.fill((255, 255, 255))
-    background1.draw(screen)
+    if mp3.background_state:
+        background1.draw(screen)
+    else:
+        background2.draw(screen)
+
+    if open_button.draw(screen):
+        mp3.load()
 
     if play_button.draw(screen):
-        mp3.load()
         mp3.play()
 
     if pause_button.draw(screen):
@@ -131,7 +140,7 @@ while run:
     if stop_button.draw(screen):
         mp3.stop()
 
-    if quit_button.draw(screen):
+    if exit_button.draw(screen):
         run = False
 
 
