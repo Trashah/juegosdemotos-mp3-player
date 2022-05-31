@@ -55,6 +55,7 @@ class MusicPlayer:
         self.background_state = True
         self.paused = False
         self.volume_change = 0.1
+        self.volume_current = 1
 
     def intro(self):
         mixer.init()
@@ -67,7 +68,7 @@ class MusicPlayer:
             if self.music_file: 
                 mixer.music.load(self.music_file)
                 self.music_name = (os.path.basename(self.music_file).split(".")[0])
-                pygame.display.set_caption("juegos de motos mp3: ", self.music_name)
+                pygame.display.set_caption("juegosdemotos mp3: " + self.music_name)
             pass
 
     def play(self):
@@ -94,13 +95,15 @@ class MusicPlayer:
         pass
 
     def volume_increase(self):
-        mixer.music.set_volume(mixer.music.get_volume() + self.volume_change)
+        self.volume_current = mixer.music.get_volume()
+        mixer.music.set_volume(self.volume_current + self.volume_change)
 
     def volume_decrease(self):
-        if mixer.music.get_volume() <= 0.1: 
+        self.volume_current = mixer.music.get_volume()
+        if self.volume_current <= 0.1: 
             mixer.music.set_volume(0)
         else: 
-            mixer.music.set_volume(mixer.music.get_volume() - self.volume_change)
+            mixer.music.set_volume(self.volume_current - self.volume_change)
 
 #create images
 stop_img = pygame.image.load("images/stop.png").convert_alpha()
@@ -128,8 +131,8 @@ exit_button = Button(661, 464, exit_img, .19)
 pause_button = Button(661, 389, pause_img, 0.18)
 previous_button = Button(246, 325, previous_img, 1)
 settings_button = Button(332, 450, settings_img, 1)
-volumeplus_button = Button(0, 0, volumeplus_img, 0.5)
-volumeminus_button = Button(300, 0, volumeminus_img, 0.5)
+volumeplus_button = Button(255, 272, volumeplus_img, 0.25)
+volumeminus_button = Button(155, 272, volumeminus_img, 0.25)
 
 #create background
 background1 = Background(0, 0, background1_img, 1)
