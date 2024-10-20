@@ -4,8 +4,14 @@ from tkinter import *
 import tkinter as tk
 from tkinter import filedialog
 import os
+import sys
 
 pygame.init()
+
+if getattr(sys, 'frozen', False):
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.dirname(os.path.abspath(__file__))
 
 #create pygame window
 SCREEN_WIDTH = 800
@@ -59,7 +65,7 @@ class MusicPlayer:
 
     def intro(self):
         mixer.init()
-        mixer.music.load("audio/en mp3 intro.mp3")
+        mixer.music.load(os.path.join(base_path, "audio/en mp3 intro.mp3"))
         mixer.music.set_volume(self.volume_current)
         mixer.music.play()
 
@@ -81,7 +87,7 @@ class MusicPlayer:
         pass
 
     def load(self):
-            initial_folder = "audio/"
+            initial_folder = os.path.join(base_path, "audio/")
             self.music_file = filedialog.askopenfilename(initialdir = initial_folder)
             mixer.init()
             if self.music_file: 
@@ -106,19 +112,19 @@ class MusicPlayer:
         mixer.music.set_volume(self.volume_current)
 
 #create images
-stop_img = pygame.image.load("images/stop.png").convert_alpha()
-play_img = pygame.image.load("images/play.png").convert_alpha()
-next_img = pygame.image.load("images/next.png").convert_alpha()
-back_img = pygame.image.load("images/back.png").convert_alpha()
-exit_img = pygame.image.load("images/exit.png").convert_alpha()
-pause_img = pygame.image.load("images/pause.png").convert_alpha()
-open_img = pygame.image.load("images/open.png").convert_alpha()
-previous_img = pygame.image.load("images/previous.png").convert_alpha()
-settings_img = pygame.image.load("images/settings.png").convert_alpha()
-volumeplus_img = pygame.image.load("images/volume+.png").convert_alpha()
-volumeminus_img = pygame.image.load("images/volume-.png").convert_alpha()
-background1_img = pygame.image.load("images/background1.png").convert_alpha()
-background2_img = pygame.image.load("images/background2.png").convert_alpha()
+stop_img = pygame.image.load(os.path.join(base_path,"images/stop.png")).convert_alpha()
+play_img = pygame.image.load(os.path.join(base_path,"images/play.png")).convert_alpha()
+next_img = pygame.image.load(os.path.join(base_path,"images/next.png")).convert_alpha()
+back_img = pygame.image.load(os.path.join(base_path,"images/back.png")).convert_alpha()
+exit_img = pygame.image.load(os.path.join(base_path,"images/exit.png")).convert_alpha()
+pause_img = pygame.image.load(os.path.join(base_path,"images/pause.png")).convert_alpha()
+open_img = pygame.image.load(os.path.join(base_path,"images/open.png")).convert_alpha()
+previous_img = pygame.image.load(os.path.join(base_path,"images/previous.png")).convert_alpha()
+settings_img = pygame.image.load(os.path.join(base_path,"images/settings.png")).convert_alpha()
+volumeplus_img = pygame.image.load(os.path.join(base_path,"images/volume+.png")).convert_alpha()
+volumeminus_img = pygame.image.load(os.path.join(base_path,"images/volume-.png")).convert_alpha()
+background1_img = pygame.image.load(os.path.join(base_path,"images/background1.png")).convert_alpha()
+background2_img = pygame.image.load(os.path.join(base_path,"images/background2.png")).convert_alpha()
 
 
 #create buttons
