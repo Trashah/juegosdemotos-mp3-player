@@ -54,22 +54,14 @@ class MusicPlayer:
         self.playing_state = False
         self.background_state = True
         self.paused = False
-        self.volume_change = 0.1
-        self.volume_current = 1
+        self.volume_change = 0.01
+        self.volume_current = 0.05
 
     def intro(self):
         mixer.init()
         mixer.music.load("audio/en mp3 intro.mp3")
+        mixer.music.set_volume(self.volume_current)
         mixer.music.play()
-
-    def load(self):
-            self.music_file = filedialog.askopenfilename()
-            mixer.init()
-            if self.music_file: 
-                mixer.music.load(self.music_file)
-                self.music_name = (os.path.basename(self.music_file).split(".")[0])
-                pygame.display.set_caption("juegosdemotos mp3: " + self.music_name)
-            pass
 
     def play(self):
         if self.music_file and not self.playing_state:
@@ -88,6 +80,17 @@ class MusicPlayer:
             self.paused = True
         pass
 
+    def load(self):
+            initial_folder = "audio/"
+            self.music_file = filedialog.askopenfilename(initialdir = initial_folder)
+            mixer.init()
+            if self.music_file: 
+                mixer.music.load(self.music_file)
+                self.music_name = (os.path.basename(self.music_file).split(".")[0])
+                pygame.display.set_caption("juegosdemotos mp3: " + self.music_name)
+                self.play()
+            pass
+
     def stop(self):
         mixer.music.fadeout(3)
         self.music_file = None
@@ -95,15 +98,12 @@ class MusicPlayer:
         pass
 
     def volume_increase(self):
-        self.volume_current = mixer.music.get_volume()
-        mixer.music.set_volume(self.volume_current + self.volume_change)
+        self.volume_current += self.volume_change
+        mixer.music.set_volume(self.volume_current)
 
     def volume_decrease(self):
-        self.volume_current = mixer.music.get_volume()
-        if self.volume_current <= 0.1: 
-            mixer.music.set_volume(0)
-        else: 
-            mixer.music.set_volume(self.volume_current - self.volume_change)
+        self.volume_current -= self.volume_change
+        mixer.music.set_volume(self.volume_current)
 
 #create images
 stop_img = pygame.image.load("images/stop.png").convert_alpha()
@@ -145,6 +145,7 @@ mp3 = MusicPlayer()
 run = True
 
 mp3.intro()
+
 while run:
     
     screen.fill((255, 255, 255))
