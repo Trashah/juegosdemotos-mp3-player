@@ -59,7 +59,7 @@ class MusicPlayer:
 
     def intro(self):
         mixer.init()
-        mixer.music.load("audio files/en mp3 intro.mp3")
+        mixer.music.load("audio/en mp3 intro.mp3")
         mixer.music.play()
 
     def load(self):
